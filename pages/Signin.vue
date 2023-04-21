@@ -9,8 +9,6 @@
         <button class="icon-x"></button>
       </div>
 
-      <!-- <Notification :message="error" v-if="error"/> -->
-
       <form
         method="post"
         @submit.prevent="signIn"
@@ -52,13 +50,10 @@
         </div>
       </form>
     </div>
-    <p>My email: {{ email }}</p>
-    <p>my password {{ password }}</p>
   </section>
 </template>
 
 <script>
-// import Notification from '~/components/Notification';
 import "@appwrite.io/pink";
 import "@appwrite.io/pink-icons";
 import {account, client} from '~/utils/web-init'
@@ -94,13 +89,14 @@ export default {
   methods: {
     signIn: async function () {
       try {
-        let accountDetails = await account.createEmailSession(
+         await account.createEmailSession(
           this.email,
           this.password
         );
         alert("user signed in");
-        this.$router.push({ path: `/profile/${accountDetails.userId}` });
+        this.$router.push({ path: `/profile` });
       } catch (e) {
+        alert("user not exist");
         console.log(e);
       }
     },
