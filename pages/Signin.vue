@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section>
     <div
       class="card u-cross-center u-width-full-line u-max-width-400"
       style="margin: 100px auto"
@@ -13,7 +13,7 @@
 
       <form
         method="post"
-        @submit.prevent="login"
+        @submit.prevent="signIn"
         class="form u-margin-block-start-24"
       >
         <ul class="form-list">
@@ -25,7 +25,7 @@
                 class="input-text u-padding-inline-end-56"
                 placeholder="email address"
                 name="email"
-                v-model="email"
+                v-model.lazy="email"
               />
             </div>
           </li>
@@ -37,7 +37,7 @@
                 class="input"
                 placeholder="password"
                 name="password"
-                v-model="password"
+                v-model.lazy="password"
               />
             </div>
           </li>
@@ -45,30 +45,65 @@
 
         <div class="form-footer">
           <div class="u-flex u-main-end u-gap-12">
-            <button class="button" type="submit">Login</button>
+            <button class="button" type="submit" @click="updateData">
+              Login
+            </button>
           </div>
         </div>
       </form>
     </div>
+    <p>My email: {{ email }}</p>
+    <p>my password {{ password }}</p>
   </section>
 </template>
 
 <script>
 // import Notification from '~/components/Notification';
-import "@appwrite.io/pink"; 
+import "@appwrite.io/pink";
 import "@appwrite.io/pink-icons";
+import {account, client} from '~/utils/web-init'
+
+account.createAnonymousSession().then(
+  (response) => {
+    console.log(response);
+  },
+  (error) => {
+    console.log(error);
+  }
+);
 
 export default {
-  //   components: {
-  //     Notification,
-  //   },
   data() {
     return {
       email: "",
       password: "",
-      //   error: null,
     };
   },
-  methods: {},
+  mounted() {
+    if (account.get !== null) {
+      try {
+        client.subscribe("documents", (response) => {
+          console.log(response);
+        });
+      } catch (error) {
+        console.log(error, "error");
+      }
+    }
+  },
+
+  methods: {
+    signIn: async function () {
+      try {
+        let accountDetails = await account.createEmailSession(
+          this.email,
+          this.password
+        );
+        alert("user signed in");
+        this.$router.push({ path: `/profile/${accountDetails.userId}` });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
 };
 </script>
