@@ -7,5 +7,6 @@
   </section>
 </template>
 <script>
-import "@appwrite.io/pink"; // optionally, add icons import "@appwrite.io/pink-icons";
+import "@appwrite.io/pink"; // optionally, add icons 
+import "@appwrite.io/pink-icons";
 </script>
