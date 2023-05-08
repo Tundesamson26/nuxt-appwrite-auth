@@ -1,5 +1,5 @@
 <template>
-  <section class="u-text-center" style="margin: 50px auto;">
+  <section class="u-text-center u-main" style="margin: 50px auto;">
     <h1 class="u-font-size-32 u-text-center">Nuxt Authentication app</h1>
     <div class="u-cross-center">
         <Signup/>
